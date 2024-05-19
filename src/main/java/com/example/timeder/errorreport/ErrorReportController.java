@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
+@RequestMapping("/api/v1/error-reports")
 public class ErrorReportController {
     private final ErrorReportService errorReportService;
 
