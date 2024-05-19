@@ -33,7 +33,24 @@ public class NotificationService {
         return notificationRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Notification not found"));
     }
 
-    // UPDATE NOT NEEDED
+    // UPDATE
+
+    public Notification updateNotification(int id, NotificationDTO notificationDTO) throws ResourceNotFoundException {
+        if (!this.notificationRepository.existsById(id)) {
+            throw new ResourceNotFoundException("Notification not found");
+        }
+
+        Notification updatedNotification = this.notificationRepository.getReferenceById(id);
+
+        if (notificationDTO.getContent() != null) {
+            updatedNotification.setContent(notificationDTO.getContent());
+        }
+        if (notificationDTO.getDateTime() != null) {
+            updatedNotification.setDateTime(notificationDTO.getDateTime());
+        }
+
+        return this.notificationRepository.save(updatedNotification);
+    }
 
     // DELETE
 
