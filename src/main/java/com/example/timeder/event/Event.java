@@ -22,7 +22,6 @@ public class Event {
     private String localization;
     private String photoFilePath;
 
-    @Id
     @ManyToOne
     @JoinTable(name = "users")
     private User owner;
