@@ -1,5 +1,4 @@
 package com.example.timeder.errorreport;
-
 import com.example.timeder.user.User;
 import jakarta.persistence.*;
 import lombok.Data;

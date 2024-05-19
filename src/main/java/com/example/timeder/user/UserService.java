@@ -94,6 +94,8 @@ public class UserService {
         this.userRepository.save(updatedUser);
     }
 
+    // TODO Wszystko w jednej metodzie (tak naprawdę tylko status updatujemy)
+
     // REMOVE
 
     public void deleteUser(int id) throws ResourceNotFoundException {

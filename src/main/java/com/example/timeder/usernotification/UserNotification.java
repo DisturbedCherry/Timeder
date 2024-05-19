@@ -21,5 +21,6 @@ public class UserNotification {
     @JoinColumn(name = "notification_id")
     private Notification notification;
 
+    // TODO Zrobić z tego relację między użytkownikiem a powiadomieniem
     private Integer creator;
 }
