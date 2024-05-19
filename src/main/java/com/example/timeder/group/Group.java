@@ -5,8 +5,8 @@ import com.example.timeder.user.User;
 import jakarta.persistence.*;
 import lombok.Data;
 
-//@Entity
-//@Table(name="groups")
+@Entity
+@Table(name="groups")
 
 @Data
 public class Group {
@@ -20,18 +20,17 @@ public class Group {
     private Boolean isPrivate;
     private String joinCode;
 
-    @Id
-    @ManyToOne
-    @JoinTable(name = "users")
-    private User owner;
+    @OneToOne
+    @JoinColumn(name = "user_id")
+    private User user;
 
-    public Group(String description, Integer currentSize, Integer totalSize, Boolean isPrivate, String joinCode, User owner) {
+    public Group(String description, Integer currentSize, Integer totalSize, Boolean isPrivate, String joinCode, User user) {
         this.description = description;
         this.currentSize = currentSize;
         this.totalSize = totalSize;
         this.isPrivate = isPrivate;
         this.joinCode = joinCode;
-        this.owner = owner;
+        this.user = user;
     }
 
     public Group() {}

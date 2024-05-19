@@ -3,19 +3,20 @@ package com.example.timeder.usergroup;
 import com.example.timeder.user.User;
 import com.example.timeder.group.Group;
 import jakarta.persistence.*;
+import lombok.Data;
 
-//@Entity
-//@Table(name="users_groups")
+@Entity
+@Table(name="users_groups")
+@Data
 
 public class UserGroup {
     @Id
     @ManyToOne
-    @JoinTable(name="user_id")
+    @JoinColumn(name="user_id")
     private User user;
 
     @Id
     @ManyToOne
-    @JoinTable(name="group_id")
+    @JoinColumn(name="group_id")
     private Group group;
-
 }

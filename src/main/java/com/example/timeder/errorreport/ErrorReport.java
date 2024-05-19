@@ -15,9 +15,8 @@ public class ErrorReport {
     @GeneratedValue
     private Integer id;
 
-    @Id
     @ManyToOne
-    @JoinTable(name = "users")
+    @JoinColumn(name = "sender_id")
     private User sender;
 
     private ErrorReportStatus status;

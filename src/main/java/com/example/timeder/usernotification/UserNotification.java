@@ -4,19 +4,21 @@ package com.example.timeder.usernotification;
 import com.example.timeder.notification.Notification;
 import com.example.timeder.user.User;
 import jakarta.persistence.*;
+import lombok.Data;
 
 @Entity
 @Table(name="users_notification")
+@Data
 
 public class UserNotification {
     @Id
     @ManyToOne
-    @JoinTable(name = "user_id")
+    @JoinColumn(name = "user_id")
     private User user;
 
     @Id
     @ManyToOne
-    @JoinTable(name = "notification_id")
+    @JoinColumn(name = "notification_id")
     private Notification notification;
 
     private Integer creator;
