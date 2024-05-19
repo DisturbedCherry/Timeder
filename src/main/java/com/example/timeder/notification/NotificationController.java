@@ -8,6 +8,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/v1/notifications")
 public class NotificationController {
+
     private final NotificationService notificationService;
 
     public NotificationController(NotificationService notificationService) {
@@ -40,4 +41,5 @@ public class NotificationController {
         } catch (Exception ignore) {
         }
     }
+
 }

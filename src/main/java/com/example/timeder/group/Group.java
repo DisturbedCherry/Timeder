@@ -1,15 +1,15 @@
 package com.example.timeder.group;
 
 import com.example.timeder.user.User;
-
 import jakarta.persistence.*;
 import lombok.Data;
 
 @Entity
-@Table(name="groups")
+@Table(name = "groups")
 
 @Data
 public class Group {
+
     @Id
     @GeneratedValue
     private Integer id;
@@ -33,5 +33,7 @@ public class Group {
         this.owner = owner;
     }
 
-    public Group() {}
+    public Group() {
+    }
+
 }

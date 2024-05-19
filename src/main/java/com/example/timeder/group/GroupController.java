@@ -1,4 +1,5 @@
 package com.example.timeder.group;
+
 import com.example.timeder.exception.ResourceNotFoundException;
 import org.springframework.web.bind.annotation.*;
 
@@ -7,6 +8,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/v1/groups")
 public class GroupController {
+
     private final GroupService groupService;
 
     public GroupController(GroupService groupService) {
@@ -39,4 +41,5 @@ public class GroupController {
         } catch (Exception ignore) {
         }
     }
+
 }

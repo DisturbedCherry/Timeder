@@ -8,6 +8,7 @@ import java.util.List;
 
 @Service
 public class NotificationService {
+
     private final NotificationRepository notificationRepository;
 
     public NotificationService(NotificationRepository notificationRepository) {
@@ -29,8 +30,7 @@ public class NotificationService {
     }
 
     public Notification getNotification(int id) throws ResourceNotFoundException {
-        return notificationRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Notification not found"));
+        return notificationRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Notification not found"));
     }
 
     // UPDATE NOT NEEDED
@@ -44,4 +44,5 @@ public class NotificationService {
 
         this.notificationRepository.deleteById(id);
     }
+
 }

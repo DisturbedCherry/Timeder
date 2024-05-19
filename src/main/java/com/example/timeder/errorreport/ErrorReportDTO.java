@@ -9,8 +9,10 @@ import java.time.LocalDate;
 @Data
 @AllArgsConstructor
 public class ErrorReportDTO {
+
     private User sender;
     ErrorReportStatus status;
     private LocalDate dateTime;
     String content;
+
 }

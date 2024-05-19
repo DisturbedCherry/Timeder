@@ -7,6 +7,7 @@ import java.util.List;
 
 @Service
 public class UserService {
+
     private final UserRepository userRepository;
 
     public UserService(UserRepository userRepository) {
@@ -28,8 +29,7 @@ public class UserService {
     }
 
     public User getUser(int id) throws ResourceNotFoundException {
-        return userRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
+        return userRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("User not found"));
     }
 
     // UPDATE
@@ -72,4 +72,5 @@ public class UserService {
 
         this.userRepository.deleteById(id);
     }
+
 }

@@ -1,4 +1,5 @@
 package com.example.timeder.errorreport;
+
 import com.example.timeder.user.User;
 import jakarta.persistence.*;
 import lombok.Data;
@@ -6,10 +7,10 @@ import lombok.Data;
 import java.time.LocalDate;
 
 @Entity
-@Table(name="error_reports")
-
+@Table(name = "error_reports")
 @Data
 public class ErrorReport {
+
     @Id
     @GeneratedValue
     private Integer id;
@@ -28,5 +29,7 @@ public class ErrorReport {
         this.content = content;
     }
 
-    public ErrorReport() {}
+    public ErrorReport() {
+    }
+
 }

@@ -8,6 +8,7 @@ import java.util.List;
 
 @Service
 public class ErrorReportService {
+
     private final ErrorReportRepository errorReportRepository;
 
     public ErrorReportService(ErrorReportRepository errorReportRepository) {
@@ -29,8 +30,7 @@ public class ErrorReportService {
     }
 
     public ErrorReport getErrorReport(int id) throws ResourceNotFoundException {
-        return this.errorReportRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Error report not found"));
+        return this.errorReportRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Error report not found"));
     }
 
     // UPDATE

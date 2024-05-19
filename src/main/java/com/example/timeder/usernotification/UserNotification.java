@@ -7,10 +7,10 @@ import jakarta.persistence.*;
 import lombok.Data;
 
 @Entity
-@Table(name="users_notification")
+@Table(name = "users_notification")
 @Data
-
 public class UserNotification {
+
     @Id
     @ManyToOne
     @JoinColumn(name = "user_id")
@@ -23,4 +23,5 @@ public class UserNotification {
 
     // TODO Zrobić z tego relację między użytkownikiem a powiadomieniem
     private Integer creator;
+
 }

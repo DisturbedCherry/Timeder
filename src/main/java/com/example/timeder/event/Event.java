@@ -1,16 +1,16 @@
 package com.example.timeder.event;
 
-import jakarta.persistence.*;
 import com.example.timeder.user.User;
+import jakarta.persistence.*;
 import lombok.Data;
 
 import java.time.LocalDate;
 
 @Entity
-@Table(name="events")
-
+@Table(name = "events")
 @Data
 public class Event {
+
     @Id
     @GeneratedValue
     private Integer id;
@@ -35,6 +35,7 @@ public class Event {
         this.photoFilePath = photoFilePath;
     }
 
-    public Event() {}
+    public Event() {
+    }
 
 }

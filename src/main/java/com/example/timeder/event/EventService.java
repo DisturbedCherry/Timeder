@@ -8,6 +8,7 @@ import java.util.List;
 
 @Service
 public class EventService {
+
     private final EventRepository eventRepository;
 
     public EventService(EventRepository eventRepository) {
@@ -29,8 +30,7 @@ public class EventService {
     }
 
     public Event getEvent(int id) throws ResourceNotFoundException {
-        return this.eventRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Event not found"));
+        return this.eventRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Event not found"));
     }
 
     // UPDATE
@@ -108,4 +108,5 @@ public class EventService {
 
         this.eventRepository.deleteById(id);
     }
+
 }

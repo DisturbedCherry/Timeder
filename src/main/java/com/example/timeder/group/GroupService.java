@@ -7,6 +7,7 @@ import java.util.List;
 
 @Service
 public class GroupService {
+
     private final GroupRepository groupRepository;
 
     public GroupService(GroupRepository groupRepository) {
@@ -28,8 +29,7 @@ public class GroupService {
     }
 
     public Group getGroup(int id) throws ResourceNotFoundException {
-        return this.groupRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Group not found"));
+        return this.groupRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Group not found"));
     }
 
     // UPDATE
@@ -40,7 +40,7 @@ public class GroupService {
         }
 
         Group updatedGroup = this.groupRepository.getReferenceById(id);
-        
+
         if (groupDTO.getDescription() != null) {
             updatedGroup.setDescription(groupDTO.getDescription());
         }
@@ -74,4 +74,5 @@ public class GroupService {
 
         this.groupRepository.deleteById(id);
     }
+
 }

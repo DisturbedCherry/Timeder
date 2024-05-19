@@ -8,6 +8,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/v1/error-reports")
 public class ErrorReportController {
+
     private final ErrorReportService errorReportService;
 
     public ErrorReportController(ErrorReportService errorReportService) {
@@ -48,4 +49,5 @@ public class ErrorReportController {
         } catch (Exception ignore) {
         }
     }
+
 }

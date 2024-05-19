@@ -9,9 +9,10 @@ import lombok.Data;
 import java.time.LocalDate;
 
 @Entity
-@Table(name="notifications")
+@Table(name = "notifications")
 @Data
 public class Notification {
+
     @Id
     @GeneratedValue
     private Integer id;
@@ -24,5 +25,7 @@ public class Notification {
         this.dateTime = dateTime;
     }
 
-    public Notification() {}
+    public Notification() {
+    }
+
 }
