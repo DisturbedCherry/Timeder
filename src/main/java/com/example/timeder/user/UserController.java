@@ -28,7 +28,13 @@ public class UserController {
         }
     }
 
-    // TODO Dodanie endpointa do updatowania usera (tylko id i status)
+    public User updateUser(@PathVariable int id, @RequestBody UserDTO userDTO) {
+        try {
+            return this.userService.updateUser(id, userDTO);
+        } catch (ResourceNotFoundException e) {
+            return null;
+        }
+    }
 
     @PostMapping("/")
     public User createUser(@RequestBody UserDTO userDTO) {
