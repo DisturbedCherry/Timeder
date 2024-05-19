@@ -35,14 +35,27 @@ public class ErrorReportService {
 
     // UPDATE
 
-    public void updateErrorReport(int id, ErrorReportStatus errorReportStatus) throws ResourceNotFoundException {
+    public ErrorReport updateErrorReport(int id, ErrorReportDTO errorReportDTO) throws ResourceNotFoundException {
         if (!this.errorReportRepository.existsById(id)) {
             throw new ResourceNotFoundException("Error report not found");
         }
 
         ErrorReport updatedErrorReport = this.errorReportRepository.getReferenceById(id);
-        updatedErrorReport.setStatus(errorReportStatus);
-        this.errorReportRepository.save(updatedErrorReport);
+
+        if (errorReportDTO.getStatus() != null) {
+            updatedErrorReport.setStatus(errorReportDTO.getStatus());
+        }
+        if (errorReportDTO.getContent() != null) {
+            updatedErrorReport.setContent(errorReportDTO.getContent());
+        }
+        if (errorReportDTO.getSender() != null) {
+            updatedErrorReport.setSender(errorReportDTO.getSender());
+        }
+        if (errorReportDTO.getDateTime() != null) {
+            updatedErrorReport.setDateTime(errorReportDTO.getDateTime());
+        }
+
+        return this.errorReportRepository.save(updatedErrorReport);
     }
 
     // REMOVE
