@@ -29,6 +29,7 @@ public class ErrorReportController {
         }
     }
 
+    @PutMapping("/{id}")
     public ErrorReport updateErrorReport(@PathVariable int id, @RequestBody ErrorReportDTO errorReportDTO) {
         try {
             return this.errorReportService.updateErrorReport(id, errorReportDTO);

@@ -29,6 +29,15 @@ public class EventController {
         }
     }
 
+    @PutMapping("/{id}")
+    public Event updateEvent(@PathVariable int id, @RequestBody EventDTO eventDTO) {
+        try {
+            return this.eventService.updateEvent(id, eventDTO);
+        } catch (ResourceNotFoundException e) {
+            return null;
+        }
+    }
+
     @PostMapping("/")
     public Event createEvent(@RequestBody EventDTO eventDTO) {
         return this.eventService.createEvent(eventDTO);

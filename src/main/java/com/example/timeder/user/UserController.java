@@ -29,6 +29,7 @@ public class UserController {
         }
     }
 
+    @PutMapping("/{id}")
     public User updateUser(@PathVariable int id, @RequestBody UserDTO userDTO) {
         try {
             return this.userService.updateUser(id, userDTO);

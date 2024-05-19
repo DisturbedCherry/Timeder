@@ -1,5 +1,6 @@
 package com.example.timeder.notification;
 
+import com.example.timeder.event.Event;
 import com.example.timeder.exception.ResourceNotFoundException;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,6 +25,15 @@ public class NotificationController {
     public Notification getNotification(@PathVariable int id) {
         try {
             return this.notificationService.getNotification(id);
+        } catch (ResourceNotFoundException e) {
+            return null;
+        }
+    }
+
+    @PutMapping("/{id}")
+    public Event updateNotification(@PathVariable int id, @RequestBody NotificationDTO notificationDTO) {
+        try {
+            return this.notificationService.updateNotification(id, notificationDTO);
         } catch (ResourceNotFoundException e) {
             return null;
         }

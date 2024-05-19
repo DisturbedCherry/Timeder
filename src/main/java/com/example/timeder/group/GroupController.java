@@ -29,6 +29,15 @@ public class GroupController {
         }
     }
 
+    @PutMapping("/{id}")
+    public Group updateGroup(@PathVariable int id, @RequestBody GroupDTO groupDTO) {
+        try {
+            return this.groupService.updateGroup(id, groupDTO);
+        } catch (ResourceNotFoundException e) {
+            return null;
+        }
+    }
+
     @PostMapping("/")
     public Group createGroup(@RequestBody GroupDTO groupDTO) {
         return this.groupService.createGroup(groupDTO);
