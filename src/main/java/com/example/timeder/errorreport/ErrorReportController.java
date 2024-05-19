@@ -15,6 +15,15 @@ public class ErrorReportController {
         this.errorReportService = errorReportService;
     }
 
+    // CREATE
+
+    @PostMapping("/")
+    public ErrorReport createErrorReport(@RequestBody ErrorReportDTO errorReportDTO) {
+        return this.errorReportService.createErrorReport(errorReportDTO);
+    }
+
+    // READ
+
     @GetMapping("/")
     public List<ErrorReport> getErrorReports() {
         return this.errorReportService.getErrorReports();
@@ -29,6 +38,8 @@ public class ErrorReportController {
         }
     }
 
+    // UPDATE
+
     @PutMapping("/{id}")
     public ErrorReport updateErrorReport(@PathVariable int id, @RequestBody ErrorReportDTO errorReportDTO) {
         try {
@@ -38,10 +49,7 @@ public class ErrorReportController {
         }
     }
 
-    @PostMapping("/")
-    public ErrorReport createErrorReport(@RequestBody ErrorReportDTO errorReportDTO) {
-        return this.errorReportService.createErrorReport(errorReportDTO);
-    }
+    // DELETE
 
     @DeleteMapping("/{id}")
     public void deleteErrorReport(@PathVariable int id) {

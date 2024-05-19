@@ -15,6 +15,15 @@ public class EventController {
         this.eventService = eventService;
     }
 
+    // CREATE
+
+    @PostMapping("/")
+    public Event createEvent(@RequestBody EventDTO eventDTO) {
+        return this.eventService.createEvent(eventDTO);
+    }
+
+    // READ
+
     @GetMapping("/")
     public List<Event> getEvents() {
         return this.eventService.getEvents();
@@ -29,6 +38,8 @@ public class EventController {
         }
     }
 
+    // UPDATE
+
     @PutMapping("/{id}")
     public Event updateEvent(@PathVariable int id, @RequestBody EventDTO eventDTO) {
         try {
@@ -38,10 +49,7 @@ public class EventController {
         }
     }
 
-    @PostMapping("/")
-    public Event createEvent(@RequestBody EventDTO eventDTO) {
-        return this.eventService.createEvent(eventDTO);
-    }
+    // DELETE
 
     @DeleteMapping("/{id}")
     public void deleteEvent(@PathVariable int id) {

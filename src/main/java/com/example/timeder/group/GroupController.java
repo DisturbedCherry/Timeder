@@ -15,6 +15,15 @@ public class GroupController {
         this.groupService = groupService;
     }
 
+    // CREATE
+
+    @PostMapping("/")
+    public Group createGroup(@RequestBody GroupDTO groupDTO) {
+        return this.groupService.createGroup(groupDTO);
+    }
+
+    // READ
+
     @GetMapping("/")
     public List<Group> getGroups() {
         return this.groupService.getGroups();
@@ -29,6 +38,8 @@ public class GroupController {
         }
     }
 
+    // UPDATE
+
     @PutMapping("/{id}")
     public Group updateGroup(@PathVariable int id, @RequestBody GroupDTO groupDTO) {
         try {
@@ -38,10 +49,7 @@ public class GroupController {
         }
     }
 
-    @PostMapping("/")
-    public Group createGroup(@RequestBody GroupDTO groupDTO) {
-        return this.groupService.createGroup(groupDTO);
-    }
+    // DELETE
 
     @DeleteMapping("/{id}")
     public void deleteGroup(@PathVariable int id) {

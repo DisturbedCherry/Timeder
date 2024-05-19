@@ -15,6 +15,16 @@ public class UserController {
         this.userService = userService;
     }
 
+    // CREATE
+
+    @PostMapping("/")
+    public User createUser(@RequestBody UserDTO userDTO) {
+        return this.userService.createUser(userDTO);
+    }
+
+
+    // READ
+
     @GetMapping("/")
     public List<User> getUsers() {
         return this.userService.getUsers();
@@ -29,6 +39,8 @@ public class UserController {
         }
     }
 
+    // UPDATE
+
     @PutMapping("/{id}")
     public User updateUser(@PathVariable int id, @RequestBody UserDTO userDTO) {
         try {
@@ -38,10 +50,7 @@ public class UserController {
         }
     }
 
-    @PostMapping("/")
-    public User createUser(@RequestBody UserDTO userDTO) {
-        return this.userService.createUser(userDTO);
-    }
+    // DELETE
 
     @DeleteMapping("/{id}")
     public void deleteUser(@PathVariable int id) {
