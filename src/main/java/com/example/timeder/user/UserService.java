@@ -34,67 +34,34 @@ public class UserService {
 
     // UPDATE
 
-    public void updateUserFirstName(int id, String firstName) throws ResourceNotFoundException {
+    public void updateUser(int id, UserDTO userDTO) throws ResourceNotFoundException {
         if (!this.userRepository.existsById(id)) {
             throw new ResourceNotFoundException("User not found");
         }
 
         User updatedUser = this.userRepository.getReferenceById(id);
-        updatedUser.setFirstName(firstName);
-        this.userRepository.save(updatedUser);
-    }
 
-    public void updateUserLastName(int id, String lastName) throws ResourceNotFoundException {
-        if (!this.userRepository.existsById(id)) {
-            throw new ResourceNotFoundException("User not found");
+        if (userDTO.getFirstName() != null) {
+            updatedUser.setFirstName(userDTO.getFirstName());
+        }
+        if (userDTO.getLastName() != null) {
+            updatedUser.setLastName(userDTO.getLastName());
+        }
+        if (userDTO.getIndex() != null) {
+            updatedUser.setIndex(userDTO.getIndex());
+        }
+        if (userDTO.getEmail() != null) {
+            updatedUser.setEmail(userDTO.getEmail());
+        }
+        if (userDTO.getPassword() != null) {
+            updatedUser.setPassword(userDTO.getPassword());
+        }
+        if (userDTO.getStatus() != null) {
+            updatedUser.setStatus(userDTO.getStatus());
         }
 
-        User updatedUser = this.userRepository.getReferenceById(id);
-        updatedUser.setLastName(lastName);
         this.userRepository.save(updatedUser);
     }
-
-    public void updateUserIndex(int id, Integer index) throws ResourceNotFoundException {
-        if (!this.userRepository.existsById(id)) {
-            throw new ResourceNotFoundException("User not found");
-        }
-
-        User updatedUser = this.userRepository.getReferenceById(id);
-        updatedUser.setIndex(index);
-        this.userRepository.save(updatedUser);
-    }
-
-    public void updateUserEmail(int id, String email) throws ResourceNotFoundException {
-        if (!this.userRepository.existsById(id)) {
-            throw new ResourceNotFoundException("User not found");
-        }
-
-        User updatedUser = this.userRepository.getReferenceById(id);
-        updatedUser.setPassword(email);
-        this.userRepository.save(updatedUser);
-    }
-
-    public void updateUserPassword(int id, String password) throws ResourceNotFoundException {
-        if (!this.userRepository.existsById(id)) {
-            throw new ResourceNotFoundException("User not found");
-        }
-
-        User updatedUser = this.userRepository.getReferenceById(id);
-        updatedUser.setPassword(password);
-        this.userRepository.save(updatedUser);
-    }
-
-    public void updateUserStatus(int id, UserStatus userStatus) throws ResourceNotFoundException {
-        if (!this.userRepository.existsById(id)) {
-            throw new ResourceNotFoundException("User not found");
-        }
-
-        User updatedUser = this.userRepository.getReferenceById(id);
-        updatedUser.setStatus(userStatus);
-        this.userRepository.save(updatedUser);
-    }
-
-    // TODO Wszystko w jednej metodzie (tak naprawdę tylko status updatujemy)
 
     // REMOVE
 
