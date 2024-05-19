@@ -22,15 +22,15 @@ public class Group {
 
     @OneToOne
     @JoinColumn(name = "user_id")
-    private User user;
+    private User owner;
 
-    public Group(String description, Integer currentSize, Integer totalSize, Boolean isPrivate, String joinCode, User user) {
+    public Group(String description, Integer currentSize, Integer totalSize, Boolean isPrivate, String joinCode, User owner) {
         this.description = description;
         this.currentSize = currentSize;
         this.totalSize = totalSize;
         this.isPrivate = isPrivate;
         this.joinCode = joinCode;
-        this.user = user;
+        this.owner = owner;
     }
 
     public Group() {}
