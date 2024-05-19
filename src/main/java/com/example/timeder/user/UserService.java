@@ -34,7 +34,7 @@ public class UserService {
 
     // UPDATE
 
-    public void updateUser(int id, UserDTO userDTO) throws ResourceNotFoundException {
+    public User updateUser(int id, UserDTO userDTO) throws ResourceNotFoundException {
         if (!this.userRepository.existsById(id)) {
             throw new ResourceNotFoundException("User not found");
         }
@@ -60,7 +60,7 @@ public class UserService {
             updatedUser.setStatus(userDTO.getStatus());
         }
 
-        this.userRepository.save(updatedUser);
+        return this.userRepository.save(updatedUser);
     }
 
     // REMOVE
