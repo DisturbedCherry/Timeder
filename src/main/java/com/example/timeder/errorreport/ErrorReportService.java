@@ -58,7 +58,7 @@ public class ErrorReportService {
         return this.errorReportRepository.save(updatedErrorReport);
     }
 
-    // REMOVE
+    // DELETE
 
     public void deleteErrorReport(int id) throws ResourceNotFoundException {
         if (!this.errorReportRepository.existsById(id)) {

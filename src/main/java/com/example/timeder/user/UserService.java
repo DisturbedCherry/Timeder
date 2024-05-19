@@ -63,7 +63,7 @@ public class UserService {
         return this.userRepository.save(updatedUser);
     }
 
-    // REMOVE
+    // DELETE
 
     public void deleteUser(int id) throws ResourceNotFoundException {
         if (!this.userRepository.existsById(id)) {

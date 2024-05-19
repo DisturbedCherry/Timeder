@@ -66,7 +66,7 @@ public class EventService {
     // TODO Dodanie użytkownika do eventu na podstawie indeksu, imienia lub nazwiska
     // TODO Dodanie grupy do eventu na podstawie nazwy grupy
 
-    // REMOVE
+    // DELETE
 
     public void deleteEvent(int id) throws ResourceNotFoundException {
         if (!this.eventRepository.existsById(id)) {

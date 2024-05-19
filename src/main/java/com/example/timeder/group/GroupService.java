@@ -34,7 +34,7 @@ public class GroupService {
 
     // UPDATE
 
-    public void updateGroup(int id, GroupDTO groupDTO) throws ResourceNotFoundException {
+    public Group updateGroup(int id, GroupDTO groupDTO) throws ResourceNotFoundException {
         if (!this.groupRepository.existsById(id)) {
             throw new ResourceNotFoundException("Group not found");
         }
@@ -60,12 +60,12 @@ public class GroupService {
             updatedGroup.setOwner(groupDTO.getOwner());
         }
 
-        this.groupRepository.save(updatedGroup);
+        return this.groupRepository.save(updatedGroup);
     }
 
     // TODO Dodanie uytkownika do grupy na podstawie np, indeksu, imienia i nazwiska
 
-    // REMOVE
+    // DELETE
 
     public void deleteGroup(int id) throws ResourceNotFoundException {
         if (!this.groupRepository.existsById(id)) {
