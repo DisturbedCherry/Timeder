@@ -4,8 +4,8 @@ import com.example.timeder.group.Group;
 import com.example.timeder.event.Event;
 import jakarta.persistence.*;
 
-@Entity
-@Table
+//@Entity
+//@Table
 
 public class GroupEvent {
     @Id
