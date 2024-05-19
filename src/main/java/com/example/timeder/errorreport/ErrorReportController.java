@@ -28,7 +28,13 @@ public class ErrorReportController {
         }
     }
 
-    // TODO Dodanie endpointa dla updatowania (tylko id i status)
+    public ErrorReport updateErrorReport(@PathVariable int id, @RequestBody ErrorReportDTO errorReportDTO) {
+        try {
+            return this.errorReportService.updateErrorReport(id, errorReportDTO);
+        } catch (ResourceNotFoundException e) {
+            return null;
+        }
+    }
 
     @PostMapping("/")
     public ErrorReport createErrorReport(@RequestBody ErrorReportDTO errorReportDTO) {
