@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import lombok.Data;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Entity
 @Table(name = "events")
@@ -25,6 +26,14 @@ public class Event {
     @ManyToOne
     @JoinTable(name = "users")
     private User owner;
+
+    @ManyToMany
+    @JoinTable(
+            name = "event_members",
+            joinColumns = @JoinColumn(name = "event_id"),
+            inverseJoinColumns = @JoinColumn(name = "user_id")
+    )
+    private List<User> members;
 
     public Event(String name, LocalDate startDateTime, Boolean isPrivate, String description, String localization, String photoFilePath) {
         this.name = name;

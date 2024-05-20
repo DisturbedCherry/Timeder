@@ -1,6 +1,7 @@
 package com.example.timeder.event;
 
 import com.example.timeder.exception.ResourceNotFoundException;
+import com.example.timeder.user.User;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -33,6 +34,15 @@ public class EventController {
     public Event getEvent(@PathVariable int id) {
         try {
             return this.eventService.getEvent(id);
+        } catch (ResourceNotFoundException e) {
+            return null;
+        }
+    }
+
+    @PostMapping("/{eventId}/users/")
+    public User addUserToEvent(@PathVariable int eventId, @RequestBody UserEventDTO userEventDTO) throws ResourceNotFoundException {
+        try {
+            return this.eventService.addUserToEvent(eventId, userEventDTO);
         } catch (ResourceNotFoundException e) {
             return null;
         }
