@@ -1,6 +1,8 @@
 package com.example.timeder.errorreport;
 
 import com.example.timeder.exception.ResourceNotFoundException;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -15,48 +17,49 @@ public class ErrorReportController {
         this.errorReportService = errorReportService;
     }
 
-    // CREATE
-
     @PostMapping("/")
-    public ErrorReport createErrorReport(@RequestBody ErrorReportDTO errorReportDTO) {
-        return this.errorReportService.createErrorReport(errorReportDTO);
+    public ResponseEntity<ErrorReportDTO> createErrorReport(@RequestBody CreateErrorReportDTO errorReportDTO) {
+        try {
+            ErrorReportDTO createdErrorReport = errorReportService.createErrorReport(errorReportDTO);
+            return new ResponseEntity<>(createdErrorReport, HttpStatus.CREATED);
+        } catch (ResourceNotFoundException e) {
+            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+        }
     }
 
-    // READ
-
     @GetMapping("/")
-    public List<ErrorReport> getErrorReports() {
-        return this.errorReportService.getErrorReports();
+    public ResponseEntity<List<ErrorReportDTO>> getErrorReports() {
+        List<ErrorReportDTO> errorReports = errorReportService.getErrorReports();
+        return new ResponseEntity<>(errorReports, HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
-    public ErrorReport getErrorReport(@PathVariable int id) {
+    public ResponseEntity<ErrorReportDTO> getErrorReport(@PathVariable int id) {
         try {
-            return this.errorReportService.getErrorReport(id);
+            ErrorReportDTO errorReport = errorReportService.getErrorReport(id);
+            return new ResponseEntity<>(errorReport, HttpStatus.OK);
         } catch (ResourceNotFoundException e) {
-            return null;
+            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
         }
     }
-
-    // UPDATE
 
     @PutMapping("/{id}")
-    public ErrorReport updateErrorReport(@PathVariable int id, @RequestBody ErrorReportDTO errorReportDTO) {
+    public ResponseEntity<ErrorReportDTO> updateErrorReport(@RequestBody ErrorReportDTO errorReportDTO) {
         try {
-            return this.errorReportService.updateErrorReport(id, errorReportDTO);
+            ErrorReportDTO updatedErrorReport = errorReportService.updateErrorReport(errorReportDTO);
+            return new ResponseEntity<>(updatedErrorReport, HttpStatus.OK);
         } catch (ResourceNotFoundException e) {
-            return null;
+            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
         }
     }
-
-    // DELETE
 
     @DeleteMapping("/{id}")
-    public void deleteErrorReport(@PathVariable int id) {
+    public ResponseEntity<Void> deleteErrorReport(@PathVariable int id) {
         try {
-            this.errorReportService.deleteErrorReport(id);
-        } catch (Exception ignore) {
+            errorReportService.deleteErrorReport(id);
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        } catch (ResourceNotFoundException e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
-
 }
