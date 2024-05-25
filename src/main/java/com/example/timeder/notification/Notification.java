@@ -1,9 +1,7 @@
 package com.example.timeder.notification;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import com.example.timeder.user.User;
+import jakarta.persistence.*;
 import lombok.Data;
 
 import java.time.LocalDate;
@@ -20,9 +18,14 @@ public class Notification {
     private String content;
     private LocalDate dateTime;
 
-    public Notification(String content, LocalDate dateTime) {
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
+
+    public Notification(String content, LocalDate dateTime, User user) {
         this.content = content;
         this.dateTime = dateTime;
+        this.user = user;
     }
 
     public Notification() {
