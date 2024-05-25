@@ -1,6 +1,8 @@
 package com.example.timeder.notification;
 
 import com.example.timeder.exception.ResourceNotFoundException;
+import com.example.timeder.user.User;
+import com.example.timeder.user.UserRepository;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -10,17 +12,22 @@ import java.util.List;
 public class NotificationService {
 
     private final NotificationRepository notificationRepository;
+    private final UserRepository userRepository;
 
-    public NotificationService(NotificationRepository notificationRepository) {
+    public NotificationService(NotificationRepository notificationRepository, UserRepository userRepository) {
         this.notificationRepository = notificationRepository;
+        this.userRepository = userRepository;
     }
 
     // CREATE
 
-    public Notification createNotification(NotificationDTO notificationDTO) {
-        Notification newNotification = new Notification(notificationDTO.getContent(), LocalDate.now());
-        notificationRepository.save(newNotification);
-        return newNotification;
+    public void sendNotificationToAllUsers(NotificationDTO notificationDTO) {
+        List<User> users = userRepository.findAll();
+
+        for(User user : users) {
+            Notification newNotification = new Notification(notificationDTO.getContent(), LocalDate.now(), user);
+            notificationRepository.save(newNotification);
+        }
     }
 
     // READ
@@ -58,6 +65,10 @@ public class NotificationService {
         if (!this.notificationRepository.existsById(id)) {
             throw new ResourceNotFoundException("Notification not found");
         }
+
+        Notification notification = this.notificationRepository.findById(id).get();
+        User user = notification.getUser();
+        user.getNotifications().remove(notification);
 
         this.notificationRepository.deleteById(id);
     }

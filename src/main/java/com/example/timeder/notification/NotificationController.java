@@ -1,6 +1,8 @@
 package com.example.timeder.notification;
 
 import com.example.timeder.exception.ResourceNotFoundException;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -17,46 +19,51 @@ public class NotificationController {
 
     // CREATE
 
-    @PostMapping("/")
-    public Notification createNotification(@RequestBody NotificationDTO notificationDTO) {
-        return this.notificationService.createNotification(notificationDTO);
+    @PostMapping("/sendToAll")
+    public ResponseEntity<String> sendNotificationToAllUsers(@RequestBody NotificationDTO notificationDTO) {
+        notificationService.sendNotificationToAllUsers(notificationDTO);
+        return ResponseEntity.ok("Notifications sent to all users.");
     }
 
     // READ
 
     @GetMapping("/")
-    public List<Notification> getNotifications() {
-        return this.notificationService.getNotifications();
+    public ResponseEntity<List<Notification>> getNotifications() {
+        List<Notification> notifications = this.notificationService.getNotifications();
+        return ResponseEntity.ok(notifications);
     }
 
     @GetMapping("/{id}")
-    public Notification getNotification(@PathVariable int id) {
+    public ResponseEntity<Notification> getNotification(@PathVariable int id) {
         try {
-            return this.notificationService.getNotification(id);
+            Notification notification = this.notificationService.getNotification(id);
+            return ResponseEntity.ok(notification);
         } catch (ResourceNotFoundException e) {
-            return null;
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
 
     // UPDATE
 
     @PutMapping("/{id}")
-    public Notification updateNotification(@PathVariable int id, @RequestBody NotificationDTO notificationDTO) {
+    public ResponseEntity<Notification> updateNotification(@PathVariable int id, @RequestBody NotificationDTO notificationDTO) {
         try {
-            return this.notificationService.updateNotification(id, notificationDTO);
+            Notification updatedNotification = this.notificationService.updateNotification(id, notificationDTO);
+            return ResponseEntity.ok(updatedNotification);
         } catch (ResourceNotFoundException e) {
-            return null;
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
 
     // DELETE
 
     @DeleteMapping("/{id}")
-    public void deleteNotification(@PathVariable int id) {
+    public ResponseEntity<Void> deleteNotification(@PathVariable int id) {
         try {
             this.notificationService.deleteNotification(id);
-        } catch (Exception ignore) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        } catch (ResourceNotFoundException e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
-
 }
