@@ -12,7 +12,7 @@ import java.time.LocalDate;
 @Setter
 public class ErrorReportDTO {
     Integer id;
-    Integer userId;
+    Integer index;
     String content;
     String status;
     LocalDate dateTime;

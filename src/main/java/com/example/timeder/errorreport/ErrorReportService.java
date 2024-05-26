@@ -24,7 +24,7 @@ public class ErrorReportService {
     // CREATE
 
     public ErrorReportDTO createErrorReport(CreateErrorReportDTO errorReportDTO) throws ResourceNotFoundException {
-        Optional<User> senderOptional = userRepository.findById(errorReportDTO.getUserId());
+        Optional<User> senderOptional = userRepository.findByIndex(errorReportDTO.getIndex());
 
         if(senderOptional.isEmpty()) {
             throw new ResourceNotFoundException("Sender not found");
@@ -38,15 +38,15 @@ public class ErrorReportService {
     // READ
 
     public List<ErrorReportDTO> getErrorReports() {
-        List<ErrorReportDTO> errorReportsDTOs = new ArrayList<>();
+        List<ErrorReportDTO> errorReportDTOs = new ArrayList<>();
 
         List<ErrorReport> errorReports = errorReportRepository.findAll();
 
         for(ErrorReport errorReport : errorReports) {
-            errorReportsDTOs.add(mapToDTO(errorReport));
+            errorReportDTOs.add(mapToDTO(errorReport));
         }
 
-        return errorReportsDTOs;
+        return errorReportDTOs;
     }
 
     public ErrorReportDTO getErrorReport(int id) throws ResourceNotFoundException {
@@ -96,11 +96,11 @@ public class ErrorReportService {
 
     private ErrorReportDTO mapToDTO(ErrorReport errorReport) {
         Integer id = errorReport.getId();
-        Integer senderId = errorReport.getSender().getId();
+        Integer senderIndex = errorReport.getSender().getIndex();
         String content = errorReport.getContent();
         String status = String.valueOf(errorReport.getStatus());
         LocalDate date = errorReport.getDateTime();
 
-        return new ErrorReportDTO(id, senderId, content, status, date);
+        return new ErrorReportDTO(id, senderIndex, content, status, date);
     }
 }
