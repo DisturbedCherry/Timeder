@@ -5,7 +5,7 @@
 git clone https://github.com/DisturbedCherry/Timeder.git
 ```
 
-### 2. Add your connection string in application.properties file here
+### 2. Add your connection string for PostgreSQL database in application.properties file here
 ![image](https://github.com/DisturbedCherry/Timeder/assets/105653616/5490259f-c5b4-473d-a2f7-9f24bd874e20)
 
 
