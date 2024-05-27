@@ -23,10 +23,11 @@ public class ErrorReport {
     private LocalDate dateTime;
     private String content;
 
-    public ErrorReport(ErrorReportStatus status, LocalDate dateTime, String content) {
+    public ErrorReport(ErrorReportStatus status, LocalDate dateTime, String content, User sender) {
         this.status = status;
         this.dateTime = dateTime;
         this.content = content;
+        this.sender = sender;
     }
 
     public ErrorReport() {
