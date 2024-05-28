@@ -10,7 +10,6 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/v1/error-reports")
 public class ErrorReportController {
-
     private final ErrorReportService errorReportService;
 
     public ErrorReportController(ErrorReportService errorReportService) {
@@ -43,10 +42,10 @@ public class ErrorReportController {
         }
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<ErrorReportDTO> updateErrorReport(@RequestBody ErrorReportDTO errorReportDTO) {
+    @PutMapping("/")
+    public ResponseEntity<ErrorReportDTO> updateErrorReportStatus(@RequestBody UpdateErrorReportDTO updateErrorReportDTO) {
         try {
-            ErrorReportDTO updatedErrorReport = errorReportService.updateErrorReport(errorReportDTO);
+            ErrorReportDTO updatedErrorReport = errorReportService.updateErrorReport(updateErrorReportDTO);
             return new ResponseEntity<>(updatedErrorReport, HttpStatus.OK);
         } catch (ResourceNotFoundException e) {
             return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
