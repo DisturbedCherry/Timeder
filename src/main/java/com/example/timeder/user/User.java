@@ -24,7 +24,10 @@ public class User implements UserDetails {
 
     private String firstName;
     private String lastName;
+
+    @Column(unique = true)
     private Integer index;
+
     private String email;
     private String password;
 
