@@ -61,8 +61,8 @@ public class ErrorReportService {
 
     // UPDATE
 
-    public ErrorReportDTO updateErrorReport(ErrorReportDTO errorReportDTO) throws ResourceNotFoundException {
-        Optional<ErrorReport> errorReportOptional = errorReportRepository.findById(errorReportDTO.getId());
+    public ErrorReportDTO updateErrorReport(UpdateErrorReportDTO updateErrorReportDTO) throws ResourceNotFoundException {
+        Optional<ErrorReport> errorReportOptional = errorReportRepository.findById(updateErrorReportDTO.getId());
 
         if(errorReportOptional.isEmpty()) {
             throw new ResourceNotFoundException("Error report not found");
@@ -70,14 +70,9 @@ public class ErrorReportService {
 
         ErrorReport errorReport = errorReportOptional.get();
 
-        if (errorReportDTO.getStatus() != null) {
-            errorReport.setStatus(ErrorReportStatus.valueOf(errorReportDTO.getStatus()));
-        }
-        if (errorReportDTO.getContent() != null) {
-            errorReport.setContent(errorReportDTO.getContent());
-        }
-        if (errorReportDTO.getDateTime() != null) {
-            errorReport.setDateTime(errorReportDTO.getDateTime());
+        if (updateErrorReportDTO.getStatus() != null) {
+            errorReport.setStatus(ErrorReportStatus.valueOf(updateErrorReportDTO.getStatus()));
+            errorReportRepository.save(errorReport);
         }
 
         return mapToDTO(errorReportRepository.save(errorReport));
