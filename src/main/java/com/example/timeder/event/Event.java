@@ -13,7 +13,7 @@ import java.util.List;
 public class Event {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     private String name;
@@ -24,7 +24,7 @@ public class Event {
     private String photoFilePath;
 
     @ManyToOne
-    @JoinTable(name = "users")
+    @JoinColumn(name = "user_id")
     private User owner;
 
     @ManyToMany
