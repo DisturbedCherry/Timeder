@@ -1,8 +1,11 @@
 package com.example.timeder.group;
 
 import com.example.timeder.user.User;
+import com.example.timeder.usergroup.UserGroup;
 import jakarta.persistence.*;
 import lombok.Data;
+
+import java.util.List;
 
 @Entity
 @Table(name = "groups")
@@ -23,6 +26,10 @@ public class Group {
     @OneToOne
     @JoinColumn(name = "user_id")
     private User owner;
+
+    // One-to-many relationship from Group to UserGroup
+    @OneToMany(mappedBy = "group")
+    private List<UserGroup> userGroups;
 
     public Group(String description, Integer currentSize, Integer totalSize, Boolean isPrivate, String joinCode, User owner) {
         this.description = description;

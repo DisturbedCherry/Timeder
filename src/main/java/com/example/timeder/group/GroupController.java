@@ -1,6 +1,7 @@
 package com.example.timeder.group;
 
 import com.example.timeder.exception.ResourceNotFoundException;
+import com.example.timeder.user.User;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -33,6 +34,15 @@ public class GroupController {
     public Group getGroup(@PathVariable int id) {
         try {
             return this.groupService.getGroup(id);
+        } catch (ResourceNotFoundException e) {
+            return null;
+        }
+    }
+
+    @GetMapping("/{id}/users")
+    public List<User> getGroupMembers(@PathVariable int id) {
+        try {
+            return this.groupService.getGroupMembers(id);
         } catch (ResourceNotFoundException e) {
             return null;
         }
