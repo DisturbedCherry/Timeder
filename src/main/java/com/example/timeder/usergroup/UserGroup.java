@@ -9,11 +9,11 @@ import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "users_groups")
+@IdClass(UserGroupId.class)
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 public class UserGroup {
-
     @Id
     @ManyToOne
     @JoinColumn(name = "user_id")
@@ -23,5 +23,4 @@ public class UserGroup {
     @ManyToOne
     @JoinColumn(name = "group_id")
     private Group group;
-
 }
