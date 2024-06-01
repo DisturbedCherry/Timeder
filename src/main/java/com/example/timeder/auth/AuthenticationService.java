@@ -43,11 +43,11 @@ public class AuthenticationService {
     public AuthenticationResponse authenticate(AuthenticationRequest request) {
         this.authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
-                        request.getEmail(),
+                        request.getIndex(),
                         request.getPassword()
                 )
         );
-        var user = this.repository.findByIndex(Integer.valueOf(request.getEmail()))
+        var user = this.repository.findByIndex(Integer.valueOf(request.getIndex()))
                 .orElseThrow();
         var jwtToken = this.jwtService.generateToken(user);
         return AuthenticationResponse.builder()
