@@ -6,6 +6,7 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -25,13 +26,13 @@ public class Group {
     private Boolean isPrivate;
     private String joinCode;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "user_id")
     private User owner;
 
     // One-to-many relationship from Group to UserGroup
     // cascade -> will delete all associated UserGroup rows when Group is deleted
-    @OneToMany(mappedBy = "group", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "group", fetch = FetchType.EAGER)
     private List<UserGroup> userGroups;
 
     public Group(String name, String description, Integer currentSize, Integer totalSize, Boolean isPrivate, String joinCode, User owner) {
@@ -42,6 +43,7 @@ public class Group {
         this.isPrivate = isPrivate;
         this.joinCode = joinCode;
         this.owner = owner;
+        this.userGroups = new ArrayList<>();
     }
 
     public Group() {
