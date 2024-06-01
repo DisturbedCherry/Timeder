@@ -7,8 +7,8 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 
 @Data
@@ -37,7 +37,7 @@ public class User implements UserDetails {
     // mappedBy -> indicates that user is not owning side of relationship
     // cascade -> any operation performed on User will be cascaded to associated Notification entities
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Notification> notifications = Collections.emptyList();
+    private List<Notification> notifications = new ArrayList<>();
 
     public User(String firstName, String lastName, Integer index, String email, String password, UserStatus status) {
         this.firstName = firstName;

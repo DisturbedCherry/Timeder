@@ -3,7 +3,9 @@ package com.example.timeder.user;
 import com.example.timeder.exception.ResourceNotFoundException;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class UserService {
@@ -24,12 +26,25 @@ public class UserService {
 
     // READ
 
-    public List<User> getUsers() {
-        return userRepository.findAll();
+    public List<UserDTO> getUsers() {
+        List<UserDTO> users = new ArrayList<>();
+        List<User> usersFromDb = userRepository.findAll();
+
+        for(User user : usersFromDb) {
+            users.add(mapToDTO(user));
+        }
+
+        return users;
     }
 
-    public User getUser(int id) throws ResourceNotFoundException {
-        return userRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("User not found"));
+    public UserDTO getUser(int id) throws ResourceNotFoundException {
+        Optional<User> userOptional = userRepository.findById(id);
+
+        if(userOptional.isEmpty()) {
+            throw new ResourceNotFoundException("User not found");
+        }
+
+        return mapToDTO(userOptional.get());
     }
 
     // UPDATE
@@ -73,4 +88,14 @@ public class UserService {
         this.userRepository.deleteById(id);
     }
 
+    private UserDTO mapToDTO(User user) {
+        return new UserDTO(
+                user.getFirstName(),
+                user.getLastName(),
+                user.getIndex(),
+                user.getEmail(),
+                user.getPassword(),
+                user.getStatus()
+        );
+    }
 }

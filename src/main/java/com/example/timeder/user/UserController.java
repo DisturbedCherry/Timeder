@@ -7,6 +7,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/users")
+@CrossOrigin(origins = "http://localhost:3000")
 public class UserController {
 
     private final UserService userService;
@@ -22,16 +23,15 @@ public class UserController {
         return this.userService.createUser(userDTO);
     }
 
-
     // READ
 
     @GetMapping("/")
-    public List<User> getUsers() {
+    public List<UserDTO> getUsers() {
         return this.userService.getUsers();
     }
 
     @GetMapping("/{id}")
-    public User getUser(@PathVariable int id) {
+    public UserDTO getUser(@PathVariable int id) {
         try {
             return this.userService.getUser(id);
         } catch (ResourceNotFoundException e) {

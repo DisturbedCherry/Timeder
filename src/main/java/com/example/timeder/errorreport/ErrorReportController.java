@@ -9,6 +9,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/error-reports")
+@CrossOrigin(origins = "http://localhost:3000")
 public class ErrorReportController {
     private final ErrorReportService errorReportService;
 
