@@ -23,16 +23,15 @@ public class UserController {
         return this.userService.createUser(userDTO);
     }
 
-
     // READ
 
     @GetMapping("/")
-    public List<User> getUsers() {
+    public List<UserDTO> getUsers() {
         return this.userService.getUsers();
     }
 
     @GetMapping("/{id}")
-    public User getUser(@PathVariable int id) {
+    public UserDTO getUser(@PathVariable int id) {
         try {
             return this.userService.getUser(id);
         } catch (ResourceNotFoundException e) {
