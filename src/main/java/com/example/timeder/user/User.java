@@ -2,6 +2,8 @@ package com.example.timeder.user;
 
 import com.example.timeder.notification.Notification;
 import com.example.timeder.usergroup.UserGroup;
+import com.example.timeder.usernotification.UserNotification;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
@@ -37,8 +39,9 @@ public class User implements UserDetails {
 
     // mappedBy -> indicates that user is not owning side of relationship
     // cascade -> any operation performed on User will be cascaded to associated Notification entities
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Notification> notifications = Collections.emptyList();
+    @JsonManagedReference
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+    private List<UserNotification> userNotifications = Collections.emptyList();
     public User(String firstName, String lastName, Integer index, String email, String password, UserStatus status) {
         this.firstName = firstName;
         this.lastName = lastName;
