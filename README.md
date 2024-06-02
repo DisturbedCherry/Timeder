@@ -19,7 +19,7 @@ change
 <br><br> to your connection string
 <br><br> if your postgresql server is running on port 5432, you dont need to do anything
 
-### 2. Open pgAdmin and create empty "timeder" database 
+### 3. Open pgAdmin and create empty "timeder" database 
 
 After logging in to your database engine, press right click on "Databases" and choose Create > Database
 <br>
@@ -31,7 +31,7 @@ Add name "timeder" in "Database" input field
 <br><br> 
 Press "Save" button
 
-### 3. Open src/main/java/com/example/timeder/TimederApplication.java file and run it from IDE
+### 4. Open src/main/java/com/example/timeder/TimederApplication.java file and run it from IDE
 
-### 4. Enable lombok annotation in the lower right corner
+### 5. Enable lombok annotation in the lower right corner
 ![lombok](https://github.com/DisturbedCherry/Timeder/assets/105653616/df93cbf5-8d56-473c-b6f8-179391aa5917)
