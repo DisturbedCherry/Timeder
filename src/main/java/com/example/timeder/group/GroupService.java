@@ -2,16 +2,16 @@ package com.example.timeder.group;
 
 import com.example.timeder.exception.ResourceNotFoundException;
 import com.example.timeder.user.User;
-import com.example.timeder.user.UserDTO;
 import com.example.timeder.user.UserRepository;
 import com.example.timeder.usergroup.UserGroup;
 import com.example.timeder.usergroup.UserGroupRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 public class GroupService {
@@ -26,8 +26,7 @@ public class GroupService {
         this.userGroupRepository = userGroupRepository;
     }
 
-    // CREATE
-
+    @Transactional
     public GroupDTO createGroup(GroupDTO groupDTO) throws ResourceNotFoundException {
         Optional<User> user = userRepository.findById(Math.toIntExact(groupDTO.getOwnerId()));
 
@@ -37,10 +36,12 @@ public class GroupService {
 
         Group newGroup = new Group(groupDTO.getName(), groupDTO.getDescription(), groupDTO.getTotalSize(), groupDTO.getTotalSize(), groupDTO.getIsPrivate(), groupDTO.getJoinCode(), user.get());
         this.groupRepository.save(newGroup);
+
+        UserGroup userGroup = new UserGroup(user.get(), newGroup);
+        userGroupRepository.save(userGroup);
+
         return mapToDTO(newGroup);
     }
-
-    // READ
 
     public List<GroupDTO> getGroups() {
         List<Group> groups = groupRepository.findAll();
@@ -63,6 +64,7 @@ public class GroupService {
         return mapToDTO(groupOptional.get());
     }
 
+    @Transactional
     public List<UserGroupDTO> getGroupMembers(int id) throws ResourceNotFoundException {
         Optional<Group> groupOptional = groupRepository.findById(id);
 
@@ -82,8 +84,6 @@ public class GroupService {
 
         return userGroupDTOs;
     }
-
-    // UPDATE
 
     public GroupDTO updateGroup(int id, GroupDTO groupDTO) throws ResourceNotFoundException {
         if (!this.groupRepository.existsById(id)) {
@@ -114,31 +114,75 @@ public class GroupService {
         return mapToDTO(groupRepository.save(updatedGroup));
     }
 
+    @Transactional
     public UserGroupDTO addUserToGroup(CreateUserGroupDTO createUserGroupDTO) throws ResourceNotFoundException {
         Optional<User> userOptional = userRepository.findByIndex(createUserGroupDTO.getIndex());
         Optional<Group> groupOptional = groupRepository.findById(createUserGroupDTO.getGroupId());
 
         if(userOptional.isEmpty() || groupOptional.isEmpty()) {
-            throw new ResourceNotFoundException("User not found");
+            throw new ResourceNotFoundException("User or Group not found");
         }
 
         UserGroup userGroup = new UserGroup(userOptional.get(), groupOptional.get());
+
+        Optional<UserGroup> existingUserGroupOptional = userGroupRepository.findByUserAndGroup(userOptional.get(), groupOptional.get());
+        if(existingUserGroupOptional.isPresent()) {
+            throw new IllegalArgumentException("User is already a member of the group");
+        }
+
         userGroupRepository.save(userGroup);
+
+        groupOptional.get().getUserGroups().add(userGroup);
+        userOptional.get().getUserGroups().add(userGroup);
 
         return mapToUserGroupDTO(userOptional.get());
     }
-    // DELETE
 
     public void deleteGroup(int id) throws ResourceNotFoundException {
-        if (!this.groupRepository.existsById(id)) {
+        Optional<Group> groupOptional = groupRepository.findById(id);
+
+        if(groupOptional.isEmpty()) {
             throw new ResourceNotFoundException("Group not found");
+        }
+
+        for(UserGroup userGroup : groupOptional.get().getUserGroups()) {
+            if(Objects.equals(userGroup.getGroup().getId(), id)) {
+                userGroupRepository.delete(userGroup);
+            }
         }
 
         groupRepository.deleteById(id);
     }
 
+    public void deleteMember(DeleteUserGroupDTO deleteUserGroupDTO) throws ResourceNotFoundException {
+        Optional<Group> groupOptional = groupRepository.findById(deleteUserGroupDTO.getGroupId());
+
+        if(groupOptional.isEmpty()) {
+            throw new ResourceNotFoundException("Group not found");
+        }
+
+        Optional<User> userOptional = userRepository.findByIndex(Math.toIntExact(deleteUserGroupDTO.getUserIndex()));
+        if(userOptional.isEmpty()) {
+            throw new ResourceNotFoundException("User not found");
+        }
+
+        // Check if the user to be removed is the owner of the group
+        if(Objects.equals(groupOptional.get().getOwner().getId(), userOptional.get().getId())) {
+            throw new IllegalArgumentException("Cannot remove the owner of the group");
+        }
+
+        List<UserGroup> userGroups = groupOptional.get().getUserGroups();
+
+        for(UserGroup userGroup : userGroups) {
+            if(Objects.equals(userGroup.getUser().getId(), userOptional.get().getId())) {
+                userGroupRepository.delete(userGroup);
+            }
+        }
+    }
+
     private GroupDTO mapToDTO(Group group) {
         GroupDTO groupDTO = new GroupDTO();
+        groupDTO.setId(group.getId());
         groupDTO.setName(group.getName());
         groupDTO.setDescription(group.getDescription());
         groupDTO.setCurrentSize(group.getCurrentSize());

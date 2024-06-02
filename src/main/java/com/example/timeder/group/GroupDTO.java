@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class GroupDTO {
+    private Integer id;
     private String name;
     private String description;
     private Integer currentSize;

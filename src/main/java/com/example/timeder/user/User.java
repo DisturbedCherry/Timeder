@@ -1,14 +1,17 @@
 package com.example.timeder.user;
 
 import com.example.timeder.notification.Notification;
+import com.example.timeder.usergroup.UserGroup;
+import com.example.timeder.usernotification.UserNotification;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 @Data
@@ -36,9 +39,9 @@ public class User implements UserDetails {
 
     // mappedBy -> indicates that user is not owning side of relationship
     // cascade -> any operation performed on User will be cascaded to associated Notification entities
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Notification> notifications = new ArrayList<>();
-
+    @JsonManagedReference
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+    private List<UserNotification> userNotifications = Collections.emptyList();
     public User(String firstName, String lastName, Integer index, String email, String password, UserStatus status) {
         this.firstName = firstName;
         this.lastName = lastName;
@@ -52,6 +55,11 @@ public class User implements UserDetails {
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of(new SimpleGrantedAuthority(this.status.name()));
     }
+
+    // One-to-many relationship from User to UserGroup
+    // cascade -> will delete all associated UserGroup rows when User is deleted
+    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
+    private List<UserGroup> userGroups;
 
     @Override
     public String getPassword() {

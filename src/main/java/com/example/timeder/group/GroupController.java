@@ -1,8 +1,8 @@
 package com.example.timeder.group;
 
 import com.example.timeder.exception.ResourceNotFoundException;
-import com.example.timeder.user.User;
-import com.example.timeder.user.UserDTO;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -21,69 +21,86 @@ public class GroupController {
     // CREATE
 
     @PostMapping("/")
-    public GroupDTO createGroup(@RequestBody GroupDTO groupDTO) throws ResourceNotFoundException {
+    public ResponseEntity<GroupDTO> createGroup(@RequestBody GroupDTO groupDTO) {
         try {
-            return this.groupService.createGroup(groupDTO);
+            GroupDTO createdGroup = this.groupService.createGroup(groupDTO);
+            return new ResponseEntity<>(createdGroup, HttpStatus.CREATED);
         }
         catch (ResourceNotFoundException e) {
-            return null;
+            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
         }
     }
 
     // READ
 
     @GetMapping("/")
-    public List<GroupDTO> getGroups() {
-        return this.groupService.getGroups();
+    public ResponseEntity<List<GroupDTO>> getGroups() {
+        List<GroupDTO> groups = this.groupService.getGroups();
+        return new ResponseEntity<>(groups, HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
-    public GroupDTO getGroup(@PathVariable int id) {
+    public ResponseEntity<GroupDTO> getGroup(@PathVariable int id) {
         try {
-            return this.groupService.getGroup(id);
+            GroupDTO group = this.groupService.getGroup(id);
+            return new ResponseEntity<>(group, HttpStatus.OK);
         } catch (ResourceNotFoundException e) {
-            return null;
+            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
         }
     }
 
     @GetMapping("/{id}/users")
-    public List<UserGroupDTO> getGroupMembers(@PathVariable int id) {
+    public ResponseEntity<List<UserGroupDTO>> getGroupMembers(@PathVariable int id) {
         try {
-            return this.groupService.getGroupMembers(id);
+            List<UserGroupDTO> members = this.groupService.getGroupMembers(id);
+            return new ResponseEntity<>(members, HttpStatus.OK);
         } catch (ResourceNotFoundException e) {
-            return null;
+            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
         }
     }
 
     @PostMapping("/users")
-    public UserGroupDTO addUserToGroup(@RequestBody CreateUserGroupDTO createUserGroupDTO) {
+    public ResponseEntity<UserGroupDTO> addUserToGroup(@RequestBody CreateUserGroupDTO createUserGroupDTO) {
         try {
-            return this.groupService.addUserToGroup(createUserGroupDTO);
+            UserGroupDTO addedUser = this.groupService.addUserToGroup(createUserGroupDTO);
+            return new ResponseEntity<>(addedUser, HttpStatus.CREATED);
         }
         catch (ResourceNotFoundException e) {
-            return  null;
+            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
         }
     }
 
     // UPDATE
 
     @PutMapping("/{id}")
-    public GroupDTO updateGroup(@PathVariable int id, @RequestBody GroupDTO groupDTO) {
+    public ResponseEntity<GroupDTO> updateGroup(@PathVariable int id, @RequestBody GroupDTO groupDTO) {
         try {
-            return this.groupService.updateGroup(id, groupDTO);
+            GroupDTO updatedGroup = this.groupService.updateGroup(id, groupDTO);
+            return new ResponseEntity<>(updatedGroup, HttpStatus.OK);
         } catch (ResourceNotFoundException e) {
-            return null;
+            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
         }
     }
 
     // DELETE
 
     @DeleteMapping("/{id}")
-    public void deleteGroup(@PathVariable int id) {
+    public ResponseEntity<String> deleteGroup(@PathVariable int id) {
         try {
             this.groupService.deleteGroup(id);
-        } catch (Exception ignore) {
+            return new ResponseEntity<>("Group deleted successfully", HttpStatus.OK);
+        } catch (ResourceNotFoundException e) {
+            return new ResponseEntity<>("Group not found", HttpStatus.NOT_FOUND);
         }
     }
 
+    @DeleteMapping("/users")
+    public ResponseEntity<String> deleteGroupMember(@RequestBody DeleteUserGroupDTO deleteUserGroupDTO) {
+        try {
+            this.groupService.deleteMember(deleteUserGroupDTO);
+            return new ResponseEntity<>("Member deleted successfully", HttpStatus.OK);
+        } catch (ResourceNotFoundException e) {
+            return new ResponseEntity<>("Member not found", HttpStatus.NOT_FOUND);
+        }
+    }
 }

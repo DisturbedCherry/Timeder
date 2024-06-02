@@ -16,15 +16,11 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
-    // CREATE
-
     public User createUser(UserDTO userDTO) {
         User newUser = new User(userDTO.getFirstName(), userDTO.getLastName(), userDTO.getIndex(), userDTO.getEmail(), userDTO.getPassword(), userDTO.getStatus());
         this.userRepository.save(newUser);
         return newUser;
     }
-
-    // READ
 
     public List<UserDTO> getUsers() {
         List<UserDTO> users = new ArrayList<>();
@@ -46,8 +42,6 @@ public class UserService {
 
         return mapToDTO(userOptional.get());
     }
-
-    // UPDATE
 
     public User updateUser(int id, UserDTO userDTO) throws ResourceNotFoundException {
         if (!this.userRepository.existsById(id)) {
@@ -77,8 +71,6 @@ public class UserService {
 
         return this.userRepository.save(updatedUser);
     }
-
-    // DELETE
 
     public void deleteUser(int id) throws ResourceNotFoundException {
         if (!this.userRepository.existsById(id)) {

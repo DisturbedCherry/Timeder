@@ -5,9 +5,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class CreateUserGroupDTO {
+public class DeleteUserGroupDTO {
     private Integer groupId;
-    private Integer index;
-    private String firstName;
-    private String lastName;
+    private Long userIndex;
 }
