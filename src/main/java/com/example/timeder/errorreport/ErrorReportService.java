@@ -21,8 +21,6 @@ public class ErrorReportService {
         this.userRepository = userRepository;
     }
 
-    // CREATE
-
     public ErrorReportDTO createErrorReport(CreateErrorReportDTO errorReportDTO) throws ResourceNotFoundException {
         Optional<User> senderOptional = userRepository.findByIndex(errorReportDTO.getIndex());
 
@@ -34,8 +32,6 @@ public class ErrorReportService {
         newErrorReport = errorReportRepository.save(newErrorReport);
         return mapToDTO(newErrorReport);
     }
-
-    // READ
 
     public List<ErrorReportDTO> getErrorReports() {
         List<ErrorReportDTO> errorReportDTOs = new ArrayList<>();
@@ -59,8 +55,6 @@ public class ErrorReportService {
         return mapToDTO(errorReportOptional.get());
     }
 
-    // UPDATE
-
     public ErrorReportDTO updateErrorReport(UpdateErrorReportDTO updateErrorReportDTO) throws ResourceNotFoundException {
         Optional<ErrorReport> errorReportOptional = errorReportRepository.findById(updateErrorReportDTO.getId());
 
@@ -78,8 +72,6 @@ public class ErrorReportService {
         return mapToDTO(errorReportRepository.save(errorReport));
     }
 
-    // DELETE
-
     public void deleteErrorReport(int id) throws ResourceNotFoundException {
         if (!errorReportRepository.existsById(id)) {
             throw new ResourceNotFoundException("Error report not found");
@@ -87,7 +79,6 @@ public class ErrorReportService {
 
         errorReportRepository.deleteById(id);
     }
-
 
     private ErrorReportDTO mapToDTO(ErrorReport errorReport) {
         Integer id = errorReport.getId();
