@@ -1,6 +1,7 @@
 package com.example.timeder.user;
 
 import com.example.timeder.exception.ResourceNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -11,13 +12,15 @@ import java.util.Optional;
 public class UserService {
 
     private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
 
-    public UserService(UserRepository userRepository) {
+    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     public User createUser(UserDTO userDTO) {
-        User newUser = new User(userDTO.getFirstName(), userDTO.getLastName(), userDTO.getIndex(), userDTO.getEmail(), userDTO.getPassword(), userDTO.getStatus());
+        User newUser = new User(userDTO.getFirstName(), userDTO.getLastName(), userDTO.getIndex(), userDTO.getEmail(), passwordEncoder.encode(userDTO.getPassword()), userDTO.getStatus());
         this.userRepository.save(newUser);
         return newUser;
     }
