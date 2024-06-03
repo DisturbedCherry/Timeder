@@ -1,11 +1,14 @@
 package com.example.timeder.user;
 
-import com.example.timeder.notification.Notification;
+import com.example.timeder.userevent.UserEvent;
 import com.example.timeder.usergroup.UserGroup;
 import com.example.timeder.usernotification.UserNotification;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -42,6 +45,7 @@ public class User implements UserDetails {
     @JsonManagedReference
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     private List<UserNotification> userNotifications = Collections.emptyList();
+
     public User(String firstName, String lastName, Integer index, String email, String password, UserStatus status) {
         this.firstName = firstName;
         this.lastName = lastName;
@@ -60,6 +64,11 @@ public class User implements UserDetails {
     // cascade -> will delete all associated UserGroup rows when User is deleted
     @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
     private List<UserGroup> userGroups;
+
+    // One-to-many relationship from User to UserEvent
+    // cascade -> will delete all associated UserEvent rows when User is deleted
+    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
+    private List<UserEvent> userEvents;
 
     @Override
     public String getPassword() {
