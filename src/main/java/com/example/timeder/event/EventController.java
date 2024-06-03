@@ -1,7 +1,8 @@
 package com.example.timeder.event;
 
 import com.example.timeder.exception.ResourceNotFoundException;
-import com.example.timeder.user.User;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -17,56 +18,89 @@ public class EventController {
         this.eventService = eventService;
     }
 
-    // CREATE
-
     @PostMapping("/")
-    public Event createEvent(@RequestBody EventDTO eventDTO) {
-        return this.eventService.createEvent(eventDTO);
+    public ResponseEntity<EventDTO> createEvent(@RequestBody EventDTO eventDTO) {
+        try {
+            EventDTO createdEvent = this.eventService.createEvent(eventDTO);
+            return new ResponseEntity<>(createdEvent, HttpStatus.CREATED);
+        } catch (ResourceNotFoundException e) {
+            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+        }
     }
 
-    // READ
-
     @GetMapping("/")
-    public List<Event> getEvents() {
-        return this.eventService.getEvents();
+    public ResponseEntity<List<EventDTO>> getEvents() {
+        List<EventDTO> events = this.eventService.getEvents();
+        return new ResponseEntity<>(events, HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
-    public Event getEvent(@PathVariable int id) {
+    public ResponseEntity<EventDTO> getEvent(@PathVariable int id) {
         try {
-            return this.eventService.getEvent(id);
+            EventDTO event = this.eventService.getEvent(id);
+            return new ResponseEntity<>(event, HttpStatus.OK);
         } catch (ResourceNotFoundException e) {
-            return null;
+            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
         }
     }
 
-    @PostMapping("/{eventId}/users/")
-    public User addUserToEvent(@PathVariable int eventId, @RequestBody UserEventDTO userEventDTO) throws ResourceNotFoundException {
+    @GetMapping("/{id}/users")
+    public ResponseEntity<List<UserEventDTO>> getEventMembers(@PathVariable int id) {
         try {
-            return this.eventService.addUserToEvent(eventId, userEventDTO);
+            List<UserEventDTO> members = this.eventService.getEventMembers(id);
+            return new ResponseEntity<>(members, HttpStatus.OK);
         } catch (ResourceNotFoundException e) {
-            return null;
+            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
         }
     }
 
-    // UPDATE
+    @PostMapping("/users")
+    public ResponseEntity<UserEventDTO> addUserToEvent(@RequestBody CreateUserEventDTO createUserEventDTO) {
+        try {
+            UserEventDTO addedUser = this.eventService.addUserToEvent(createUserEventDTO);
+            return new ResponseEntity<>(addedUser, HttpStatus.CREATED);
+        } catch (ResourceNotFoundException e) {
+            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @PostMapping("/groups")
+    public ResponseEntity<GroupEventDTO> addGroupToEvent(@RequestBody CreateGroupEventDTO createGroupEventDTO) {
+        try {
+            GroupEventDTO addedGroup = this.eventService.addGroupToEvent(createGroupEventDTO);
+            return new ResponseEntity<>(addedGroup, HttpStatus.CREATED);
+        } catch (ResourceNotFoundException e) {
+            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+        }
+    }
 
     @PutMapping("/{id}")
-    public Event updateEvent(@PathVariable int id, @RequestBody EventDTO eventDTO) {
+    public ResponseEntity<EventDTO> updateEvent(@PathVariable int id, @RequestBody EventDTO eventDTO) {
         try {
-            return this.eventService.updateEvent(id, eventDTO);
+            EventDTO updatedEvent = this.eventService.updateEvent(id, eventDTO);
+            return new ResponseEntity<>(updatedEvent, HttpStatus.OK);
         } catch (ResourceNotFoundException e) {
-            return null;
+            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
         }
     }
 
-    // DELETE
-
     @DeleteMapping("/{id}")
-    public void deleteEvent(@PathVariable int id) {
+    public ResponseEntity<String> deleteEvent(@PathVariable int id) {
         try {
             this.eventService.deleteEvent(id);
-        } catch (Exception ignore) {
+            return new ResponseEntity<>("Event deleted successfully", HttpStatus.OK);
+        } catch (ResourceNotFoundException e) {
+            return new ResponseEntity<>("Event not found", HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @DeleteMapping("/users")
+    public ResponseEntity<String> deleteGroupMember(@RequestBody DeleteUserEventDTO deleteUserEventDTO) {
+        try {
+            this.eventService.deleteMember(deleteUserEventDTO);
+            return new ResponseEntity<>("Member deleted successfully", HttpStatus.OK);
+        } catch (ResourceNotFoundException e) {
+            return new ResponseEntity<>("Member not found", HttpStatus.NOT_FOUND);
         }
     }
 
