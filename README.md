@@ -10,6 +10,14 @@ git clone https://github.com/DisturbedCherry/Timeder.git
 In <strong>src/main/resources/application.properties</strong> file 
 <br>
 <br>
+Type here your PostgreSQL credentials:
+<br>
+<br>
+
+![image](https://github.com/DisturbedCherry/Timeder/assets/105653616/6a76dedf-4047-4e05-8f61-1b255662a9b4)
+<br>
+<br>
+
 In this line:
 
 ![image](https://github.com/DisturbedCherry/Timeder/assets/105653616/5490259f-c5b4-473d-a2f7-9f24bd874e20)
