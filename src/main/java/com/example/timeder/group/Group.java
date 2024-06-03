@@ -1,5 +1,6 @@
 package com.example.timeder.group;
 
+import com.example.timeder.groupevent.GroupEvent;
 import com.example.timeder.user.User;
 import com.example.timeder.usergroup.UserGroup;
 import jakarta.persistence.*;
@@ -35,6 +36,11 @@ public class Group {
     @OneToMany(mappedBy = "group", fetch = FetchType.EAGER)
     private List<UserGroup> userGroups;
 
+    // One-to-many relationship from Group to GroupEvent
+    // cascade -> will delete all associated GroupEvent rows when Event is deleted
+    @OneToMany(mappedBy = "group", fetch = FetchType.EAGER)
+    private List<GroupEvent> groupEvents;
+
     public Group(String name, String description, Integer currentSize, Integer totalSize, Boolean isPrivate, String joinCode, User owner) {
         this.name = name;
         this.description = description;
@@ -44,6 +50,7 @@ public class Group {
         this.joinCode = joinCode;
         this.owner = owner;
         this.userGroups = new ArrayList<>();
+        this.groupEvents = new ArrayList<>();
     }
 
     public Group() {
