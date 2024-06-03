@@ -1,10 +1,14 @@
 package com.example.timeder.event;
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
-@Data
+@Getter
+@Setter
 public class UserEventDTO {
+
     private Integer index;
     private String firstName;
     private String lastName;
+
 }
