@@ -18,20 +18,15 @@ public class GroupController {
         this.groupService = groupService;
     }
 
-    // CREATE
-
     @PostMapping("/")
     public ResponseEntity<GroupDTO> createGroup(@RequestBody GroupDTO groupDTO) {
         try {
             GroupDTO createdGroup = this.groupService.createGroup(groupDTO);
             return new ResponseEntity<>(createdGroup, HttpStatus.CREATED);
-        }
-        catch (ResourceNotFoundException e) {
+        } catch (ResourceNotFoundException e) {
             return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
         }
     }
-
-    // READ
 
     @GetMapping("/")
     public ResponseEntity<List<GroupDTO>> getGroups() {
@@ -64,13 +59,10 @@ public class GroupController {
         try {
             UserGroupDTO addedUser = this.groupService.addUserToGroup(createUserGroupDTO);
             return new ResponseEntity<>(addedUser, HttpStatus.CREATED);
-        }
-        catch (ResourceNotFoundException e) {
+        } catch (ResourceNotFoundException e) {
             return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
         }
     }
-
-    // UPDATE
 
     @PutMapping("/{id}")
     public ResponseEntity<GroupDTO> updateGroup(@PathVariable int id, @RequestBody GroupDTO groupDTO) {
@@ -81,8 +73,6 @@ public class GroupController {
             return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
         }
     }
-
-    // DELETE
 
     @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteGroup(@PathVariable int id) {
@@ -103,4 +93,5 @@ public class GroupController {
             return new ResponseEntity<>("Member not found", HttpStatus.NOT_FOUND);
         }
     }
+
 }
