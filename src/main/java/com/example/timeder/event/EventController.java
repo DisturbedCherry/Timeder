@@ -54,6 +54,16 @@ public class EventController {
         }
     }
 
+    @GetMapping("/{id}/groups")
+    public ResponseEntity<List<GroupEventDTO>> getEventGroups(@PathVariable int id) {
+        try {
+            List<GroupEventDTO> groups = this.eventService.getEventGroups(id);
+            return new ResponseEntity<>(groups, HttpStatus.OK);
+        } catch (ResourceNotFoundException e) {
+            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+        }
+    }
+
     @PostMapping("/users")
     public ResponseEntity<UserEventDTO> addUserToEvent(@RequestBody CreateUserEventDTO createUserEventDTO) {
         try {
@@ -95,12 +105,22 @@ public class EventController {
     }
 
     @DeleteMapping("/users")
-    public ResponseEntity<String> deleteGroupMember(@RequestBody DeleteUserEventDTO deleteUserEventDTO) {
+    public ResponseEntity<String> deleteEventMember(@RequestBody DeleteUserEventDTO deleteUserEventDTO) {
         try {
             this.eventService.deleteMember(deleteUserEventDTO);
             return new ResponseEntity<>("Member deleted successfully", HttpStatus.OK);
         } catch (ResourceNotFoundException e) {
             return new ResponseEntity<>("Member not found", HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @DeleteMapping("/groups")
+    public ResponseEntity<String> deleteEventGroup(@RequestBody DeleteGroupEventDTO deleteGroupEventDTO) {
+        try {
+            this.eventService.deleteGroup(deleteGroupEventDTO);
+            return new ResponseEntity<>("Group deleted successfully", HttpStatus.OK);
+        } catch (ResourceNotFoundException e) {
+            return new ResponseEntity<>("Group not found", HttpStatus.NOT_FOUND);
         }
     }
 
