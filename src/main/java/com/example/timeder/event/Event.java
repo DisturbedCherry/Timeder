@@ -7,7 +7,7 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,7 +22,7 @@ public class Event {
     private Integer id;
 
     private String name;
-    private LocalDate startDateTime;
+    private LocalDateTime startDateTime;
     private Boolean isPrivate;
     private String description;
     private String localization;
@@ -42,7 +42,7 @@ public class Event {
     @OneToMany(mappedBy = "event", fetch = FetchType.EAGER)
     private List<GroupEvent> groupEvents;
 
-    public Event(String name, LocalDate startDateTime, Boolean isPrivate, String description, String localization, String photoFilePath, User owner) {
+    public Event(String name, LocalDateTime startDateTime, Boolean isPrivate, String description, String localization, String photoFilePath, User owner) {
         this.name = name;
         this.startDateTime = startDateTime;
         this.isPrivate = isPrivate;
