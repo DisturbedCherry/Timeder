@@ -1,6 +1,8 @@
 package com.example.timeder.group;
 
 import com.example.timeder.exception.ResourceNotFoundException;
+import com.example.timeder.groupevent.GroupEvent;
+import com.example.timeder.groupevent.GroupEventRepository;
 import com.example.timeder.user.User;
 import com.example.timeder.user.UserRepository;
 import com.example.timeder.usergroup.UserGroup;
@@ -19,11 +21,13 @@ public class GroupService {
     private final GroupRepository groupRepository;
     private final UserRepository userRepository;
     private final UserGroupRepository userGroupRepository;
+    private final GroupEventRepository groupEventRepository;
 
-    public GroupService(GroupRepository groupRepository, UserRepository userRepository, UserGroupRepository userGroupRepository) {
+    public GroupService(GroupRepository groupRepository, UserRepository userRepository, UserGroupRepository userGroupRepository, GroupEventRepository groupEventRepository) {
         this.groupRepository = groupRepository;
         this.userRepository = userRepository;
         this.userGroupRepository = userGroupRepository;
+        this.groupEventRepository = groupEventRepository;
     }
 
     @Transactional
@@ -34,7 +38,7 @@ public class GroupService {
             throw new ResourceNotFoundException("User not found");
         }
 
-        Group newGroup = new Group(groupDTO.getName(), groupDTO.getDescription(), groupDTO.getTotalSize(), groupDTO.getTotalSize(), groupDTO.getIsPrivate(), groupDTO.getJoinCode(), user.get());
+        Group newGroup = new Group(groupDTO.getName(), groupDTO.getDescription(), groupDTO.getCurrentSize(), groupDTO.getTotalSize(), groupDTO.getIsPrivate(), groupDTO.getJoinCode(), user.get());
         this.groupRepository.save(newGroup);
 
         UserGroup userGroup = new UserGroup(user.get(), newGroup);
@@ -148,6 +152,12 @@ public class GroupService {
         for (UserGroup userGroup : groupOptional.get().getUserGroups()) {
             if (Objects.equals(userGroup.getGroup().getId(), id)) {
                 userGroupRepository.delete(userGroup);
+            }
+        }
+
+        for (GroupEvent groupEvent : groupOptional.get().getGroupEvents()) {
+            if (Objects.equals(groupEvent.getGroup().getId(), id)) {
+                groupEventRepository.delete(groupEvent);
             }
         }
 
