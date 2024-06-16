@@ -52,17 +52,17 @@ public class ApplicationConfig {
     CommandLineRunner initDatabase(UserService userService, ErrorReportService errorReportService) {
         return args -> {
             if(userRepository.count() == 0) {
-                UserDTO user1 = new UserDTO("John", "Doe", 123456, "123456", "123456", UserStatus.ACTIVE);
-                UserDTO user2 = new UserDTO("Jakub", "Kowalski", 245822, "jane.doe@example.com", "245822", UserStatus.ACTIVE);
-                UserDTO user3 = new UserDTO("Robert", "Lewandowski", 1, "jim.doe@example.com", "password", UserStatus.ACTIVE);
+                UserDTO user1 = new UserDTO("Robert", "Kubica", 123456, "robert@gmail.com", "123456", UserStatus.ACTIVE);
+                UserDTO user2 = new UserDTO("Jakub", "Kowalski", 245822, "jakub.kowalski@example.com", "245822", UserStatus.ACTIVE);
+                UserDTO user3 = new UserDTO("Robert", "Lewandowski", 1, "robert.lewy@example.com", "password", UserStatus.ACTIVE);
 
                 userService.createUser(user1);
                 userService.createUser(user2);
                 userService.createUser(user3);
 
                 CreateErrorReportDTO errorReport1 = new CreateErrorReportDTO(123456, "Strona Event Management nie dziala!");
-                CreateErrorReportDTO errorReport2 = new CreateErrorReportDTO(123456, "Strona Account Management nie dziala");
-                CreateErrorReportDTO errorReport3 = new CreateErrorReportDTO(123456, "Dodajcie czarny motyw");
+                CreateErrorReportDTO errorReport2 = new CreateErrorReportDTO(245822, "Strona Account Management nie dziala");
+                CreateErrorReportDTO errorReport3 = new CreateErrorReportDTO(245822, "Dodajcie czarny motyw");
 
                 errorReportService.createErrorReport(errorReport1);
                 errorReportService.createErrorReport(errorReport2);
