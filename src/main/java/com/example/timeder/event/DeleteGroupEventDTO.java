@@ -8,6 +8,6 @@ import lombok.Setter;
 public class DeleteGroupEventDTO {
 
     private Integer eventId;
-    private Integer groupId;
+    private String groupName;
 
 }
