@@ -44,6 +44,16 @@ public class EventController {
         }
     }
 
+    @GetMapping("/users/{userId}")
+    public ResponseEntity<List<EventDTO>> getUserEvents(@PathVariable int userId) {
+        try {
+            List<EventDTO> events = this.eventService.getUserEvents(userId);
+            return new ResponseEntity<>(events, HttpStatus.OK);
+        } catch (ResourceNotFoundException e) {
+            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+        }
+    }
+
     @GetMapping("/{id}/users")
     public ResponseEntity<List<UserEventDTO>> getEventMembers(@PathVariable int id) {
         try {

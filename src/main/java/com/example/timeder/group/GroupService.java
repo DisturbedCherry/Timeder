@@ -73,6 +73,26 @@ public class GroupService {
         return mapToDTO(groupOptional.get());
     }
 
+    public List<GroupDTO> getUserGroups(int userId) throws ResourceNotFoundException {
+        Optional<User> userOptional = userRepository.findById(userId);
+
+        if (userOptional.isEmpty()) {
+            throw new ResourceNotFoundException("User not found");
+        }
+
+        List<Group> groups = userOptional.get().getUserGroups().stream()
+                .map(UserGroup::getGroup)
+                .toList();
+
+        List<GroupDTO> groupDTOs = new ArrayList<>();
+
+        for (Group group : groups) {
+            groupDTOs.add(mapToDTO(group));
+        }
+
+        return groupDTOs;
+    }
+
     @Transactional
     public List<UserGroupDTO> getGroupMembers(int id) throws ResourceNotFoundException {
         Optional<Group> groupOptional = groupRepository.findById(id);

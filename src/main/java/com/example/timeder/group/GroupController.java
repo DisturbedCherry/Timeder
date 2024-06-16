@@ -44,6 +44,16 @@ public class GroupController {
         }
     }
 
+    @GetMapping("/users/{userId}")
+    public ResponseEntity<List<GroupDTO>> getUserGroups(@PathVariable int userId) {
+        try {
+            List<GroupDTO> groups = this.groupService.getUserGroups(userId);
+            return new ResponseEntity<>(groups, HttpStatus.OK);
+        } catch (ResourceNotFoundException e) {
+            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+        }
+    }
+
     @GetMapping("/{id}/users")
     public ResponseEntity<List<UserGroupDTO>> getGroupMembers(@PathVariable int id) {
         try {

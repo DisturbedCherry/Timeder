@@ -29,15 +29,15 @@ public class NotificationController {
     // READ
 
     @GetMapping("/")
-    public ResponseEntity<List<Notification>> getNotifications() {
-        List<Notification> notifications = this.notificationService.getNotifications();
+    public ResponseEntity<List<NotificationDTO>> getNotifications() {
+        List<NotificationDTO> notifications = this.notificationService.getNotifications();
         return ResponseEntity.ok(notifications);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Notification> getNotification(@PathVariable int id) {
+    public ResponseEntity<NotificationDTO> getNotification(@PathVariable int id) {
         try {
-            Notification notification = this.notificationService.getNotification(id);
+            NotificationDTO notification = this.notificationService.getNotification(id);
             return ResponseEntity.ok(notification);
         } catch (ResourceNotFoundException e) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -47,9 +47,9 @@ public class NotificationController {
     // UPDATE
 
     @PutMapping("/{id}")
-    public ResponseEntity<Notification> updateNotification(@PathVariable int id, @RequestBody NotificationDTO notificationDTO) {
+    public ResponseEntity<NotificationDTO> updateNotification(@PathVariable int id, @RequestBody NotificationDTO notificationDTO) {
         try {
-            Notification updatedNotification = this.notificationService.updateNotification(id, notificationDTO);
+            NotificationDTO updatedNotification = this.notificationService.updateNotification(id, notificationDTO);
             return ResponseEntity.ok(updatedNotification);
         } catch (ResourceNotFoundException e) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
