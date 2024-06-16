@@ -34,7 +34,11 @@ public class GroupService {
             throw new ResourceNotFoundException("User not found");
         }
 
-        Group newGroup = new Group(groupDTO.getName(), groupDTO.getDescription(), groupDTO.getTotalSize(), groupDTO.getTotalSize(), groupDTO.getIsPrivate(), groupDTO.getJoinCode(), user.get());
+        if(groupRepository.existsByJoinCode(groupDTO.getJoinCode())) {
+            throw new IllegalArgumentException("Join code already exists");
+        }
+
+        Group newGroup = new Group(groupDTO.getName(), groupDTO.getDescription(),1, groupDTO.getTotalSize(), groupDTO.getIsPrivate(), groupDTO.getJoinCode(), user.get());
         this.groupRepository.save(newGroup);
 
         UserGroup userGroup = new UserGroup(user.get(), newGroup);
@@ -123,6 +127,10 @@ public class GroupService {
             throw new ResourceNotFoundException("User or Group not found");
         }
 
+        if(Objects.equals(groupOptional.get().getCurrentSize(), groupOptional.get().getTotalSize())) {
+            throw new IllegalArgumentException("Group is already full");
+        }
+
         UserGroup userGroup = new UserGroup(userOptional.get(), groupOptional.get());
 
         Optional<UserGroup> existingUserGroupOptional = userGroupRepository.findByUserAndGroup(userOptional.get(), groupOptional.get());
@@ -134,6 +142,9 @@ public class GroupService {
 
         groupOptional.get().getUserGroups().add(userGroup);
         userOptional.get().getUserGroups().add(userGroup);
+
+        groupOptional.get().setCurrentSize(groupOptional.get().getCurrentSize() + 1);
+        groupRepository.save(groupOptional.get());
 
         return mapToUserGroupDTO(userOptional.get());
     }
@@ -178,6 +189,9 @@ public class GroupService {
                 userGroupRepository.delete(userGroup);
             }
         }
+
+        groupOptional.get().setCurrentSize(groupOptional.get().getCurrentSize() - 1);
+        groupRepository.save(groupOptional.get());
     }
 
     private GroupDTO mapToDTO(Group group) {
