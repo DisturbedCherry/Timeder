@@ -110,6 +110,26 @@ public class EventService {
         return groupEventDTOs;
     }
 
+    public List<EventDTO> getUserEvents(int userId) throws ResourceNotFoundException {
+        Optional<User> userOptional = userRepository.findById(userId);
+
+        if (userOptional.isEmpty()) {
+            throw new ResourceNotFoundException("User not found");
+        }
+
+        List<Event> events = userOptional.get().getUserEvents().stream()
+                .map(UserEvent::getEvent)
+                .toList();
+
+        List<EventDTO> eventDTOs = new ArrayList<>();
+
+        for (Event event : events) {
+            eventDTOs.add(mapToDTO(event));
+        }
+
+        return eventDTOs;
+    }
+
     public EventDTO updateEvent(int id, EventDTO eventDTO) throws ResourceNotFoundException {
         if (!this.eventRepository.existsById(id)) {
             throw new ResourceNotFoundException("Event not found");
