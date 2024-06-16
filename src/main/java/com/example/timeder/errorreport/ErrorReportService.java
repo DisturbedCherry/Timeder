@@ -22,7 +22,7 @@ public class ErrorReportService {
     }
 
     public ErrorReportDTO createErrorReport(CreateErrorReportDTO errorReportDTO) throws ResourceNotFoundException {
-        Optional<User> senderOptional = userRepository.findByIndex(errorReportDTO.getIndex());
+        Optional<User> senderOptional = userRepository.findById(errorReportDTO.getUserId());
 
         if(senderOptional.isEmpty()) {
             throw new ResourceNotFoundException("Sender not found");

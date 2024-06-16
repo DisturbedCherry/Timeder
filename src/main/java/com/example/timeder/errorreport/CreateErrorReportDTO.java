@@ -8,6 +8,6 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 public class CreateErrorReportDTO {
-    Integer index;
+    Integer userId;
     String content;
 }
