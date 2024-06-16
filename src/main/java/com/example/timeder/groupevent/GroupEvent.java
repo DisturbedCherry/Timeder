@@ -3,11 +3,16 @@ package com.example.timeder.groupevent;
 import com.example.timeder.event.Event;
 import com.example.timeder.group.Group;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Entity
-@Table
+@Table(name = "groups_events")
+@IdClass(GroupEventId.class)
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class GroupEvent {
 
     @Id

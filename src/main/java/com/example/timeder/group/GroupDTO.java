@@ -1,6 +1,5 @@
 package com.example.timeder.group;
 
-import com.example.timeder.user.User;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -9,6 +8,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class GroupDTO {
+
     private Integer id;
     private String name;
     private String description;
@@ -17,4 +17,5 @@ public class GroupDTO {
     private Boolean isPrivate;
     private String joinCode;
     private Long ownerId;
+
 }
