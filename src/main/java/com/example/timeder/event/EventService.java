@@ -91,6 +91,25 @@ public class EventService {
         return userEventDTOs;
     }
 
+    @Transactional
+    public List<GroupEventDTO> getEventGroups(int id) throws ResourceNotFoundException {
+        Optional<Event> eventOptional = this.eventRepository.findById(id);
+
+        if (eventOptional.isEmpty()) {
+            throw new ResourceNotFoundException("Event not found");
+        }
+
+        List<Group> groups = eventOptional.get().getGroupEvents().stream().map(GroupEvent::getGroup).toList();
+
+        List<GroupEventDTO> groupEventDTOs = new ArrayList<>();
+
+        for (Group group : groups) {
+            groupEventDTOs.add(mapToGroupEventDTO(group));
+        }
+
+        return groupEventDTOs;
+    }
+
     public EventDTO updateEvent(int id, EventDTO eventDTO) throws ResourceNotFoundException {
         if (!this.eventRepository.existsById(id)) {
             throw new ResourceNotFoundException("Event not found");
@@ -146,7 +165,7 @@ public class EventService {
 
     @Transactional
     public GroupEventDTO addGroupToEvent(CreateGroupEventDTO createGroupEventDTO) throws ResourceNotFoundException {
-        Optional<Group> groupOptional = this.groupRepository.findById(createGroupEventDTO.getGroupId());
+        Optional<Group> groupOptional = this.groupRepository.findByName(createGroupEventDTO.getGroupName());
         Optional<Event> eventOptional = this.eventRepository.findById(createGroupEventDTO.getEventId());
 
         if (groupOptional.isEmpty() || eventOptional.isEmpty()) {
@@ -176,8 +195,14 @@ public class EventService {
         }
 
         for (UserEvent userEvent : eventOptional.get().getUserEvents()) {
-            if (Objects.equals(userEvent.getUser().getId(), id)) {
+            if (Objects.equals(userEvent.getEvent().getId(), id)) {
                 this.userEventRepository.delete(userEvent);
+            }
+        }
+
+        for (GroupEvent groupEvent : eventOptional.get().getGroupEvents()) {
+            if (Objects.equals(groupEvent.getEvent().getId(), id)) {
+                this.groupEventRepository.delete(groupEvent);
             }
         }
 
@@ -206,6 +231,27 @@ public class EventService {
         for (UserEvent userEvent : userEvents) {
             if (Objects.equals(userEvent.getUser().getId(), userOptional.get().getId())) {
                 this.userEventRepository.delete(userEvent);
+            }
+        }
+    }
+
+    public void deleteGroup(DeleteGroupEventDTO deleteGroupEventDTO) throws ResourceNotFoundException {
+        Optional<Event> eventOptional = this.eventRepository.findById(deleteGroupEventDTO.getEventId());
+
+        if (eventOptional.isEmpty()) {
+            throw new ResourceNotFoundException("Event not found");
+        }
+
+        Optional<Group> groupOptional = this.groupRepository.findByName(deleteGroupEventDTO.getGroupName());
+        if (groupOptional.isEmpty()) {
+            throw new ResourceNotFoundException("Group not found");
+        }
+
+        List<GroupEvent> groupEvents = eventOptional.get().getGroupEvents();
+
+        for (GroupEvent groupEvent : groupEvents) {
+            if (Objects.equals(groupEvent.getGroup().getId(), groupOptional.get().getId())) {
+                this.groupEventRepository.delete(groupEvent);
             }
         }
     }
