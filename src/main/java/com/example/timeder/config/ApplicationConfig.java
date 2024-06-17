@@ -52,9 +52,9 @@ public class ApplicationConfig {
     CommandLineRunner initDatabase(UserService userService, ErrorReportService errorReportService) {
         return args -> {
             if(userRepository.count() == 0) {
-                UserDTO user1 = new UserDTO("John", "Doe", 123456, "123456", "123456", UserStatus.ACTIVE);
-                UserDTO user2 = new UserDTO("Jakub", "Kowalski", 245822, "jane.doe@example.com", "245822", UserStatus.ACTIVE);
-                UserDTO user3 = new UserDTO("Robert", "Lewandowski", 1, "jim.doe@example.com", "password", UserStatus.ACTIVE);
+                UserDTO user1 = new UserDTO(1L, "John", "Doe", 123456, "123456", "123456", UserStatus.ACTIVE);
+                UserDTO user2 = new UserDTO(2L, "Jakub", "Kowalski", 245822, "jane.doe@example.com", "245822", UserStatus.ACTIVE);
+                UserDTO user3 = new UserDTO(3L, "Robert", "Lewandowski", 1, "jim.doe@example.com", "password", UserStatus.ACTIVE);
 
                 userService.createUser(user1);
                 userService.createUser(user2);

@@ -1,6 +1,7 @@
 package com.example.timeder.user;
 
 import com.example.timeder.exception.ResourceNotFoundException;
+import jakarta.transaction.Transactional;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -46,6 +47,7 @@ public class UserService {
         return mapToDTO(userOptional.get());
     }
 
+    @Transactional
     public User updateUser(int id, UserDTO userDTO) throws ResourceNotFoundException {
         if (!this.userRepository.existsById(id)) {
             throw new ResourceNotFoundException("User not found");
@@ -85,6 +87,7 @@ public class UserService {
 
     private UserDTO mapToDTO(User user) {
         return new UserDTO(
+                user.getId(),
                 user.getFirstName(),
                 user.getLastName(),
                 user.getIndex(),
