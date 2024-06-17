@@ -12,10 +12,7 @@ import com.example.timeder.userevent.UserEventRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class EventService {
@@ -58,6 +55,8 @@ public class EventService {
         for (Event event : events) {
             eventDTOs.add(mapToDTO(event));
         }
+
+        eventDTOs.sort(Comparator.comparing(EventDTO::getId).reversed());
 
         return eventDTOs;
     }

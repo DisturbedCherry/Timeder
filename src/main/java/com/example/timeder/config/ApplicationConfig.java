@@ -59,14 +59,6 @@ public class ApplicationConfig {
                 userService.createUser(user1);
                 userService.createUser(user2);
                 userService.createUser(user3);
-
-                CreateErrorReportDTO errorReport1 = new CreateErrorReportDTO(123456, "Strona Event Management nie dziala!");
-                CreateErrorReportDTO errorReport2 = new CreateErrorReportDTO(245822, "Strona Account Management nie dziala");
-                CreateErrorReportDTO errorReport3 = new CreateErrorReportDTO(245822, "Dodajcie czarny motyw");
-
-                errorReportService.createErrorReport(errorReport1);
-                errorReportService.createErrorReport(errorReport2);
-                errorReportService.createErrorReport(errorReport3);
             }
         };
     }
