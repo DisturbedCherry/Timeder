@@ -47,9 +47,12 @@ public class AuthenticationService {
                         request.getPassword()
                 )
         );
+
         var user = this.repository.findByIndex(Integer.valueOf(request.getIndex()))
                 .orElseThrow();
+
         var jwtToken = this.jwtService.generateToken(user);
+
         return AuthenticationResponse.builder()
                 .token(jwtToken)
                 .build();
